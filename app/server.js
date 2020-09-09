@@ -7,8 +7,12 @@ server.on('request', simpleResponse);
 
 function simpleResponse(request, response) {
   var responseContent;
-
-  if (request.url === '/') {
+  if(request.url.includes('..')){
+    console.log("Error resolving context request: " + request.url);
+    response.writeHeader(500);
+    response.end();
+  }
+  else if (request.url === '/') {
     responseContent = fs.readFile('./app/views/index.cats', endResponse);
   }
   else if (request.url.match(/\.[^.]*$/)) {
